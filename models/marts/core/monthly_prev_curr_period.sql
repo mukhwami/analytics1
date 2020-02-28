@@ -25,16 +25,16 @@ transactions_transform as(
         (select
             distinct client_id
         from {{ ref('stg_fact_transactions') }}
-        where "left"(tran_date::text,6)::int>=201901
-        and "left"(tran_date::text,6)::int <=101912 
+        -- where "left"(tran_date::text,6)::int>=201901
+        -- and "left"(tran_date::text,6)::int <=101912 
         ) as q2
         cross join
         (
             select  
                 distinct "left"(date_dim_id::text,6)::int as month_no
             from dates
-            where "left"(date_dim_id::text,6)::int>=201901
-            and "left"(date_dim_id::text,6)::int <=101912 
+            -- where "left"(date_dim_id::text,6)::int>=201901
+            -- and "left"(date_dim_id::text,6)::int <=101912 
         ) as q3
         ) as q4
         left join        
@@ -44,8 +44,8 @@ transactions_transform as(
             COALESCE(sum(volume),0) as volume,
             COALESCE(sum(revenue),0) as revenue
         from transactions
-        where "left"(tran_date::text,6)::int>=201901
-        and "left"(tran_date::text,6)::int <=101912 
+        -- where "left"(tran_date::text,6)::int>=201901
+        -- and "left"(tran_date::text,6)::int <=101912 
         group by 1,2
         ) as q5
         using(client_id,month_no)
